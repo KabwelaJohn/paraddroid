@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paraddroid — Software. Interfaces. Digital Solutions.</title>
+<meta name="description" content="Paraddroid is an independent software development and design brand building practical digital solutions and graphics for individuals, small businesses and organisations.">
+<style>
+  :root{
+    --green-dark:#0f2b1f;
+    --green:#2f7a4d;
+    --green-bright:#3fae6a;
+    --off-white:#ffffff;
+    --charcoal:#1c1c1a;
+    --line:#c9c7bd;
+    --line-dark:#3a3a36;
+    --mono: "IBM Plex Mono", "Courier New", monospace;
+    --sans: "Inter", "Helvetica Neue", Arial, sans-serif;
+    --unit: 8px;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    font-family:var(--sans);
+    background:var(--off-white);
+    color:var(--charcoal);
+    line-height:1.5;
+    font-size:16px;
+  }
+
+  img{max-width:100%;display:block;}
+
+  a{color:inherit;text-decoration:none;}
+
+  button{font-family:inherit;cursor:pointer;}
+
+  .mono{font-family:var(--mono);}
+
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+
+  /* ============ GRID BACKDROP ============ */
+  .grid-lines{
+    background-image:
+      linear-gradient(to right, rgba(28,28,26,0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(28,28,26,0.045) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* ============ TOP BAR (status strip) ============ */
+  .status-strip{
+    background:var(--charcoal);
+    color:#c7c7c2;
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.02em;
+    padding:6px 0;
+    border-bottom:1px solid var(--line-dark);
+  }
+  .status-strip .wrap{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .status-dot{
+    display:inline-block;
+    width:7px;height:7px;
+    background:var(--green-bright);
+    margin-right:6px;
+    border-radius:1px;
+  }
+
+  /* ============ NAV ============ */
+  header.site-nav{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:var(--off-white);
+    border-bottom:2px solid var(--charcoal);
+  }
+  .nav-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 0;
+    gap:24px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:700;
+    font-size:17px;
+    letter-spacing:-0.01em;
+  }
+  .brand-mark{
+    width:26px;height:26px;
+    object-fit:contain;
+    flex-shrink:0;
+  }
+  nav.primary-links{
+    display:flex;
+    gap:2px;
+  }
+  nav.primary-links a{
+    padding:8px 14px;
+    font-size:14px;
+    font-weight:500;
+    border:1px solid transparent;
+    color:#4a4a46;
+  }
+  nav.primary-links a:hover{
+    border:1px solid var(--line);
+    color:var(--charcoal);
+    background:#e9e7de;
+  }
+  nav.primary-links a.active{
+    color:var(--charcoal);
+    border:1px solid var(--line);
+    background:#e9e7de;
+  }
+  .nav-cta{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:11px 18px;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:0.02em;
+    border:1px solid var(--charcoal);
+    background:transparent;
+    color:var(--charcoal);
+    transition:background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+    white-space:nowrap;
+  }
+  .btn-solid{
+    background:var(--charcoal);
+    color:var(--off-white);
+  }
+  .btn-solid:hover{
+    background:var(--green-dark);
+    border-color:var(--green-dark);
+  }
+  .btn-outline:hover{
+    background:var(--charcoal);
+    color:var(--off-white);
+  }
+  .btn-green{
+    background:var(--green);
+    border-color:var(--green);
+    color:#fff;
+  }
+  .btn-green:hover{
+    background:var(--green-dark);
+    border-color:var(--green-dark);
+  }
+  .nav-toggle{
+    display:none;
+    width:38px;height:38px;
+    border:1px solid var(--charcoal);
+    background:transparent;
+    align-items:center;
+    justify-content:center;
+  }
+  .nav-toggle span, .nav-toggle::before, .nav-toggle::after{
+    display:none;
+  }
+  .nav-toggle svg{width:18px;height:18px;}
+
+  /* ============ SECTION SCAFFOLDING ============ */
+  section{
+    border-bottom:1px solid var(--line);
+    padding:64px 0;
+  }
+  .section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:24px;
+    margin-bottom:36px;
+    padding-bottom:16px;
+    border-bottom:1px solid var(--line);
+    flex-wrap:wrap;
+  }
+  .section-label{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--green);
+    font-weight:600;
+    margin-bottom:8px;
+  }
+  .section-title{
+    font-size:28px;
+    font-weight:700;
+    letter-spacing:-0.01em;
+  }
+  .section-meta{
+    font-family:var(--mono);
+    font-size:12px;
+    color:#6b6b64;
+    text-align:right;
+  }
+
+  /* ============ HERO ============ */
+  .hero{
+    padding-top:56px;
+    padding-bottom:0;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.3fr 1fr;
+    border:1px solid var(--line);
+    border-bottom:none;
+  }
+  .hero-main{
+    padding:48px;
+    border-right:1px solid var(--line);
+  }
+  .hero-tag{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--green);
+    font-weight:700;
+    margin-bottom:20px;
+  }
+  .hero-title{
+    font-size:56px;
+    line-height:1.05;
+    font-weight:800;
+    letter-spacing:-0.02em;
+    margin-bottom:20px;
+  }
+  .hero-title span{color:var(--green);}
+  .hero-desc{
+    font-size:17px;
+    color:#3d3d38;
+    max-width:520px;
+    margin-bottom:32px;
+  }
+  .hero-actions{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .hero-side{
+    display:flex;
+    flex-direction:column;
+  }
+  .hero-stat{
+    padding:20px 24px;
+    border-bottom:1px solid var(--line);
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  .hero-stat:last-child{border-bottom:none;}
+  .hero-stat-num{
+    font-family:var(--mono);
+    font-size:30px;
+    font-weight:700;
+    color:var(--charcoal);
+  }
+  .hero-stat-label{
+    font-family:var(--mono);
+    font-size:11px;
+    color:#6b6b64;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    margin-top:4px;
+  }
+  .hero-strip{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    border:1px solid var(--line);
+    border-top:none;
+  }
+  .hero-strip div{
+    padding:14px 20px;
+    font-family:var(--mono);
+    font-size:12px;
+    color:#4a4a46;
+    border-right:1px solid var(--line);
+  }
+  .hero-strip div:last-child{border-right:none;}
+  .hero-strip b{color:var(--charcoal);}
+
+  /* ============ SERVICES ============ */
+  .service-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    border:1px solid var(--line);
+    border-bottom:none;
+  }
+  .service-block{
+    padding:32px;
+    border-right:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    display:flex;
+    flex-direction:column;
+  }
+  .service-block:nth-child(3n){border-right:none;}
+  .service-num{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--green);
+    font-weight:700;
+    margin-bottom:16px;
+  }
+  .service-name{
+    font-size:20px;
+    font-weight:700;
+    margin-bottom:10px;
+  }
+  .service-desc{
+    font-size:14px;
+    color:#4a4a46;
+    margin-bottom:18px;
+  }
+  .service-includes{
+    list-style:none;
+    font-size:13px;
+    color:#3d3d38;
+    margin-bottom:24px;
+    flex-grow:1;
+  }
+  .service-includes li{
+    padding:7px 0;
+    border-top:1px solid #e2e0d5;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .service-includes li::before{
+    content:"";
+    width:5px;height:5px;
+    background:var(--green);
+    flex-shrink:0;
+  }
+  .service-link{
+    font-family:var(--mono);
+    font-size:12px;
+    font-weight:700;
+    color:var(--charcoal);
+    border-top:1px solid var(--charcoal);
+    padding-top:12px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .service-block:hover .service-link{color:var(--green);border-color:var(--green);}
+
+  /* ============ WORK / PROJECTS ============ */
+  .project-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    border:1px solid var(--line);
+    border-bottom:none;
+  }
+  .project-panel{
+    border-right:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .project-panel:nth-child(2n){border-right:none;}
+  .project-visual{
+    height:170px;
+    background:
+      repeating-linear-gradient(135deg, #e5e3d8, #e5e3d8 10px, #ddd bb 11px, #dedcd0 11px);
+    background-color:#e2e0d5;
+    border-bottom:1px solid var(--line);
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .project-visual span{
+    font-family:var(--mono);
+    font-size:12px;
+    color:#8a8a80;
+    letter-spacing:0.05em;
+  }
+  .project-body{padding:24px;}
+  .project-meta-row{
+    display:flex;
+    justify-content:space-between;
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--green);
+    font-weight:700;
+    margin-bottom:14px;
+  }
+  .project-name{
+    font-size:19px;
+    font-weight:700;
+    margin-bottom:8px;
+  }
+  .project-desc{
+    font-size:14px;
+    color:#4a4a46;
+    margin-bottom:18px;
+  }
+  .project-tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-bottom:18px;
+    font-family:var(--mono);
+    font-size:11px;
+  }
+  .project-tags span{
+    border:1px solid var(--line);
+    padding:4px 8px;
+    color:#4a4a46;
+  }
+  .project-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-top:1px solid #e2e0d5;
+    padding-top:14px;
+  }
+  .project-status{
+    font-family:var(--mono);
+    font-size:11px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    color:#4a4a46;
+  }
+  .status-dot-sm{
+    width:6px;height:6px;
+    background:var(--green-bright);
+    display:inline-block;
+  }
+  .status-dot-sm.dim{background:#b5b3a8;}
+  .project-view{
+    font-family:var(--mono);
+    font-size:12px;
+    font-weight:700;
+  }
+
+  /* ============ ABOUT ============ */
+  .about-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:0;
+    border:1px solid var(--line);
+  }
+  .about-copy{
+    padding:40px;
+    border-right:1px solid var(--line);
+  }
+  .about-copy p{
+    font-size:16px;
+    color:#3d3d38;
+    margin-bottom:16px;
+    max-width:520px;
+  }
+  .about-copy p:last-child{margin-bottom:0;}
+  .about-list{
+    display:flex;
+    flex-direction:column;
+  }
+  .about-list-item{
+    padding:20px 32px;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+  }
+  .about-list-item:last-child{border-bottom:none;}
+  .about-list-item .mark{
+    font-family:var(--mono);
+    color:var(--green);
+    font-weight:700;
+    font-size:13px;
+    padding-top:2px;
+  }
+  .about-list-item .txt strong{
+    display:block;
+    font-size:15px;
+    margin-bottom:3px;
+  }
+  .about-list-item .txt span{
+    font-size:13px;
+    color:#5a5a54;
+  }
+
+  /* ============ PROCESS ============ */
+  .process-track{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    border:1px solid var(--line);
+    position:relative;
+  }
+  .process-step{
+    padding:28px 20px;
+    border-right:1px solid var(--line);
+    position:relative;
+  }
+  .process-step:last-child{border-right:none;}
+  .process-step::after{
+    content:"";
+    position:absolute;
+    top:38px;
+    right:-1px;
+    width:1px;
+    height:1px;
+  }
+  .process-num{
+    font-family:var(--mono);
+    font-size:22px;
+    font-weight:700;
+    color:var(--green);
+    margin-bottom:14px;
+  }
+  .process-title{
+    font-size:14px;
+    font-weight:700;
+    letter-spacing:0.03em;
+    margin-bottom:8px;
+  }
+  .process-desc{
+    font-size:13px;
+    color:#4a4a46;
+  }
+  .process-arrow{
+    position:absolute;
+    top:44px;
+    right:-9px;
+    width:16px;height:16px;
+    background:var(--off-white);
+    border:1px solid var(--line);
+    z-index:2;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .process-arrow svg{width:8px;height:8px;}
+  .process-step:last-child .process-arrow{display:none;}
+
+  /* ============ DONATE MODAL ============ */
+  .modal-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(28,28,26,0.55);
+    z-index:100;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal-box{
+    background:var(--off-white);
+    border:1px solid var(--charcoal);
+    width:100%;
+    max-width:380px;
+  }
+  .modal-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px 20px;
+    border-bottom:1px solid var(--line);
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:0.04em;
+  }
+  .modal-close{
+    background:transparent;
+    border:none;
+    font-size:22px;
+    line-height:1;
+    color:var(--charcoal);
+    padding:0 4px;
+  }
+  .modal-body{padding:24px 20px;}
+  .modal-body p{
+    font-size:14px;
+    color:#3d3d38;
+    margin-bottom:4px;
+  }
+  .donate-options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-top:16px;
+  }
+  .donate-opt{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 16px;
+    border:1px solid var(--line);
+    background:transparent;
+    font-size:14px;
+    font-weight:600;
+    color:var(--charcoal);
+    transition:background 0.12s ease, border-color 0.12s ease;
+  }
+  .donate-opt:hover{
+    background:var(--charcoal);
+    color:var(--off-white);
+    border-color:var(--charcoal);
+  }
+
+  /* ============ REQUEST FORM ============ */
+  .form-shell{
+    border:1px solid var(--line);
+    display:grid;
+    grid-template-columns:1fr 1.6fr;
+  }
+  .form-info{
+    padding:40px 32px;
+    border-right:1px solid var(--line);
+    background:var(--charcoal);
+    color:var(--off-white);
+  }
+  .form-info h3{
+    font-size:22px;
+    margin-bottom:16px;
+    font-weight:700;
+  }
+  .form-info p{
+    font-size:14px;
+    color:#c7c7c2;
+    margin-bottom:24px;
+  }
+  .form-info-list{list-style:none;}
+  .form-info-list li{
+    font-family:var(--mono);
+    font-size:12px;
+    padding:12px 0;
+    border-top:1px solid var(--line-dark);
+    color:#c7c7c2;
+    display:flex;
+    gap:10px;
+  }
+  .form-info-list li b{color:var(--green-bright);}
+  .form-body{padding:40px 32px;}
+  .form-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin-bottom:16px;
+  }
+  .field{
+    display:flex;
+    flex-direction:column;
+    margin-bottom:16px;
+  }
+  .form-row .field{margin-bottom:0;}
+  .field label{
+    font-family:var(--mono);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.03em;
+    color:#4a4a46;
+    margin-bottom:6px;
+  }
+  .field input,
+  .field select,
+  .field textarea{
+    border:1px solid var(--line);
+    background:#fff;
+    padding:11px 12px;
+    font-family:var(--sans);
+    font-size:14px;
+    color:var(--charcoal);
+    width:100%;
+  }
+  .field textarea{resize:vertical;min-height:100px;}
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus{
+    outline:2px solid var(--green);
+    outline-offset:-1px;
+    border-color:var(--green);
+  }
+  .radio-row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .radio-opt{
+    border:1px solid var(--line);
+    padding:9px 14px;
+    font-size:13px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    cursor:pointer;
+  }
+  .radio-opt input{width:14px;height:14px;margin:0;}
+  .form-submit{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:8px;
+    flex-wrap:wrap;
+    gap:14px;
+  }
+  .form-note{
+    font-family:var(--mono);
+    font-size:11px;
+    color:#6b6b64;
+  }
+  .success-box{
+    display:none;
+    border:1px solid var(--green);
+    background:#eaf3ec;
+    padding:20px;
+    margin-top:20px;
+    font-size:14px;
+    color:var(--green-dark);
+  }
+  .success-box.show{display:block;}
+  .success-box b{display:block;font-family:var(--mono);font-size:12px;margin-bottom:6px;letter-spacing:0.03em;}
+
+  /* ============ CONTACT ============ */
+  .contact-grid{
+    display:grid;
+    grid-template-columns:1.3fr 1fr;
+    border:1px solid var(--line);
+  }
+  .contact-main{
+    padding:48px;
+    border-right:1px solid var(--line);
+  }
+  .contact-main h2{
+    font-size:32px;
+    font-weight:800;
+    margin-bottom:14px;
+    letter-spacing:-0.01em;
+  }
+  .contact-main p{
+    font-size:16px;
+    color:#4a4a46;
+    max-width:440px;
+    margin-bottom:28px;
+  }
+  .contact-list{display:flex;flex-direction:column;}
+  .contact-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:16px 0;
+    border-top:1px solid var(--line);
+  }
+  .contact-row:last-child{border-bottom:1px solid var(--line);}
+  .contact-row .k{
+    font-family:var(--mono);
+    font-size:11px;
+    color:#6b6b64;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+  }
+  .contact-row .v{
+    font-size:15px;
+    font-weight:600;
+  }
+  .contact-side{
+    padding:40px 32px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:16px;
+    background:#e9e7de;
+  }
+  .contact-side .btn{width:100%;}
+
+  /* ============ FOOTER ============ */
+  footer{
+    background:var(--charcoal);
+    color:#c7c7c2;
+    padding:40px 0 20px;
+  }
+  .footer-top{
+    display:grid;
+    grid-template-columns:1.4fr 1fr 1fr 1fr;
+    gap:24px;
+    padding-bottom:32px;
+    border-bottom:1px solid var(--line-dark);
+    margin-bottom:20px;
+  }
+  .footer-brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:700;
+    font-size:16px;
+    color:var(--off-white);
+    margin-bottom:12px;
+  }
+  .footer-brand .brand-mark{
+    background:var(--off-white);
+  }
+  .footer-brand .brand-mark::after{
+    background:var(--green-bright);
+  }
+  .footer-desc{
+    font-size:13px;
+    color:#9a9a92;
+    max-width:280px;
+  }
+  .footer-col h4{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:#8a8a82;
+    margin-bottom:14px;
+  }
+  .footer-col a, .footer-col span{
+    display:block;
+    font-size:13px;
+    color:#c7c7c2;
+    margin-bottom:10px;
+  }
+  .footer-col a:hover{color:var(--green-bright);}
+  .footer-bottom{
+    display:flex;
+    justify-content:space-between;
+    font-family:var(--mono);
+    font-size:11px;
+    color:#7a7a72;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  /* ============ UTILITIES ============ */
+  .hide-mobile{display:block;}
+  .show-mobile{display:none;}
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 900px){
+    .hero-grid{grid-template-columns:1fr;}
+    .hero-main{border-right:none;border-bottom:1px solid var(--line);padding:32px 24px;}
+    .hero-title{font-size:38px;}
+    .hero-strip{grid-template-columns:repeat(2,1fr);}
+    .hero-strip div:nth-child(2n){border-right:none;}
+    .hero-strip div:nth-child(1),.hero-strip div:nth-child(2){border-bottom:1px solid var(--line);}
+    .service-grid{grid-template-columns:1fr 1fr;}
+    .service-block:nth-child(3n){border-right:1px solid var(--line);}
+    .service-block:nth-child(2n){border-right:none;}
+    .project-grid{grid-template-columns:1fr;}
+    .project-panel{border-right:none !important;}
+    .about-grid{grid-template-columns:1fr;}
+    .about-copy{border-right:none;border-bottom:1px solid var(--line);}
+    .process-track{grid-template-columns:repeat(2,1fr);}
+    .process-step{border-bottom:1px solid var(--line);}
+    .process-step:nth-child(2n){border-right:none;}
+    .process-arrow{display:none;}
+    .form-shell{grid-template-columns:1fr;}
+    .form-info{border-right:none;border-bottom:1px solid var(--line);}
+    .contact-grid{grid-template-columns:1fr;}
+    .contact-main{border-right:none;border-bottom:1px solid var(--line);}
+    .footer-top{grid-template-columns:1fr 1fr;}
+  }
+
+  @media (max-width: 640px){
+    .wrap{padding:0 16px;}
+    nav.primary-links{display:none;}
+    .nav-toggle{display:flex;}
+    .nav-toggle svg{display:block;}
+    .nav-cta .btn-outline{display:none;}
+    .status-strip .show-mobile-only{display:none;}
+    section{padding:44px 0;}
+    .hero-title{font-size:30px;}
+    .hero-main{padding:24px 20px;}
+    .section-title{font-size:22px;}
+    .section-head{flex-direction:column;align-items:flex-start;}
+    .section-meta{text-align:left;}
+    .service-grid{grid-template-columns:1fr;}
+    .service-block{border-right:none !important;}
+    .form-row{grid-template-columns:1fr;}
+    .form-body,.form-info{padding:28px 20px;}
+    .contact-main,.contact-side{padding:28px 20px;}
+    .footer-top{grid-template-columns:1fr;gap:28px;}
+    .hero-strip{grid-template-columns:1fr;}
+    .hero-strip div{border-right:none !important;border-bottom:1px solid var(--line);}
+    .hero-strip div:last-child{border-bottom:none;}
+    .process-track{grid-template-columns:1fr;}
+    .process-step{border-right:none !important;}
+    nav.primary-links.mobile-open{
+      display:flex;
+      flex-direction:column;
+      position:absolute;
+      top:100%;left:0;right:0;
+      background:var(--off-white);
+      border-bottom:2px solid var(--charcoal);
+      padding:8px;
+      gap:4px;
+    }
+    nav.primary-links.mobile-open a{padding:12px 14px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important; scroll-behavior:auto !important;}
+  }
+
+  ::selection{background:var(--green-bright);color:#fff;}
+</style>
+</head>
+<body>
+
+<!-- STATUS STRIP -->
+<div class="status-strip">
+  <div class="wrap">
+    <span><span class="status-dot"></span>AVAILABLE FOR NEW PROJECTS</span>
+    <span class="show-mobile-only">PARADDROID/DEV — BUILD 2026.09</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<header class="site-nav">
+  <div class="wrap nav-inner">
+    <a href="#home" class="brand">
+      <img src="logo.png" alt="Paraddroid logo" class="brand-mark">
+      PARADDROID
+    </a>
+    <nav class="primary-links" id="primaryNav">
+      <a href="#home" class="active">Home</a>
+      <a href="#services">Services</a>
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <button type="button" class="btn btn-outline hide-mobile" id="donateBtnNav">DONATE</button>
+      <a href="#request" class="btn btn-outline hide-mobile">REQUEST SERVICE</a>
+      <a href="#request" class="btn btn-green show-mobile" style="display:none;">REQUEST</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ HOME / HERO ============ -->
+<section class="hero" id="home">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-main">
+        <div class="hero-tag">// INDEPENDENT SOFTWARE &amp; DESIGN BRAND</div>
+        <h1 class="hero-title">Software.<br>Interfaces.<br><span>Digital Solutions.</span></h1>
+        <p class="hero-desc">I build practical software and user interfaces for people and businesses that need technology to work.</p>
+        <div class="hero-actions">
+          <a href="#request" class="btn btn-solid">REQUEST A SERVICE</a>
+          <a href="https://youtube.com/@paraddroid" target="_blank" rel="noopener" class="btn btn-outline">VIEW MY WORK</a>
+        </div>
+      </div>
+      <div class="hero-side">
+        <div class="hero-stat">
+          <div class="hero-stat-num">12+</div>
+          <div class="hero-stat-label">Projects Delivered</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">3</div>
+          <div class="hero-stat-label">Core Service Lines</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">100%</div>
+          <div class="hero-stat-label">Independently Built</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-strip">
+      <div><b>STACK:</b> FLUTTER / REACT / FIREBASE / PYTHON / JAVASCRIPT</div>
+      <div><b>FOCUS:</b> MOBILE + WEB</div>
+      <div><b>BASED:</b> ZAMBIA</div>
+      <div><b>STATUS:</b> ACCEPTING PROJECTS</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="section-label">WHAT I DO</div>
+        <h2 class="section-title">Services</h2>
+      </div>
+      <div class="section-meta">03 SERVICE LINES<br>SCROLL FOR DETAIL</div>
+    </div>
+
+    <div class="service-grid">
+
+      <div class="service-block">
+        <div class="service-num">01 / SOFTWARE</div>
+        <div class="service-name">Software Development</div>
+        <p class="service-desc">Custom applications built to solve a specific problem, not off-the-shelf software forced to fit.</p>
+        <ul class="service-includes">
+          <li>Mobile applications</li>
+          <li>Web applications</li>
+          <li>Business software</li>
+          <li>Custom tools</li>
+          <li>Database-backed applications</li>
+          <li>API integrations</li>
+          <li>Automation</li>
+        </ul>
+        <a href="#request" class="service-link">REQUEST THIS SERVICE <span>&rarr;</span></a>
+      </div>
+
+      <div class="service-block">
+        <div class="service-num">02 / DESIGN</div>
+        <div class="service-name">UI/UX Design</div>
+        <p class="service-desc">Interfaces designed around how people actually use them, not how they look in a portfolio.</p>
+        <ul class="service-includes">
+          <li>Mobile UI</li>
+          <li>Web UI</li>
+          <li>Prototyping</li>
+          <li>Interface redesign</li>
+          <li>Design systems</li>
+          <li>User flows</li>
+        </ul>
+        <a href="#request" class="service-link">REQUEST THIS SERVICE <span>&rarr;</span></a>
+      </div>
+
+      <div class="service-block">
+        <div class="service-num">03 / SOLUTIONS</div>
+        <div class="service-name">Technical Solutions</div>
+        <p class="service-desc">Practical fixes for specific operational problems, sized to fit smaller budgets and teams.</p>
+        <ul class="service-includes">
+          <li>Business process automation</li>
+          <li>Digital tools</li>
+          <li>Student/education software</li>
+          <li>Small-business software</li>
+          <li>Custom technical solutions</li>
+        </ul>
+        <a href="#request" class="service-link">REQUEST THIS SERVICE <span>&rarr;</span></a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ WORK / PROJECTS ============ -->
+<section id="work">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="section-label">SELECTED WORK</div>
+        <h2 class="section-title">Projects</h2>
+      </div>
+      <div class="section-meta">PARADDROID PROJECTS<br>2024 — PRESENT</div>
+    </div>
+
+    <div class="project-grid">
+
+      <div class="project-panel">
+        <div class="project-visual"><span>SCREENSHOT / MOCKUP</span></div>
+        <div class="project-body">
+          <div class="project-meta-row"><span>PROJECT 001</span><span>EDUCATION</span></div>
+          <div class="project-name">Quiz App</div>
+          <p class="project-desc">A mobile application that gives users a fun way to practice topics by making it gamified.</p>
+          <div class="project-tags"><span>FLUTTER</span><span>FIREBASE</span><span>ANDROID</span><span>WEB</span></div>
+          <div class="project-footer">
+            <span class="project-status"><span class="status-dot-sm"></span>ACTIVE</span>
+            <a href="https://play.google.com/store/apps/details?id=com.paraddroid.tailored" target="_blank" rel="noopener" class="project-view">VIEW PROJECT &rarr;</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-panel">
+        <div class="project-visual"><span>SCREENSHOT / MOCKUP</span></div>
+        <div class="project-body">
+          <div class="project-meta-row"><span>PROJECT 002</span><span>BUSINESS TOOLS</span></div>
+          <div class="project-name">Small-Business Inventory Tracker</div>
+          <p class="project-desc">A lightweight internal tool for tracking stock levels and orders, built for a small retail operation.</p>
+          <div class="project-tags"><span>REACT</span><span>SUPABASE</span><span>WEB</span></div>
+          <div class="project-footer">
+            <span class="project-status"><span class="status-dot-sm dim"></span>IN PROGRESS</span>
+            <a href="#" class="project-view" id="inventoryProjectLink">VIEW PROJECT &rarr;</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="section-label">THE BRAND</div>
+        <h2 class="section-title">About Paraddroid</h2>
+      </div>
+      <div class="section-meta">INDEPENDENT<br>SOFTWARE + DESIGN</div>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-copy">
+        <p>Paraddroid is an independent software development and design brand. I work directly with individuals, small businesses and organisations that need something built properly, without going through a large agency.</p>
+        <p>The work spans software development, graphic design, UI/UX, and ad creation — whatever the problem calls for. Most projects don't need more complexity — they need someone who understands the problem and builds the right solution for it.</p>
+        <p>I handle the full process myself: understanding the requirements, designing the visuals or interface, building it, and delivering something that actually gets used.</p>
+      </div>
+      <div class="about-list">
+        <div class="about-list-item">
+          <span class="mark">&#9633;</span>
+          <div class="txt">
+            <strong>Practical work</strong>
+            <span>Built for the problem in front of you, not a generic template.</span>
+          </div>
+        </div>
+        <div class="about-list-item">
+          <span class="mark">&#9633;</span>
+          <div class="txt">
+            <strong>Good design</strong>
+            <span>Interfaces and visuals that are clear, not just visually impressive.</span>
+          </div>
+        </div>
+        <div class="about-list-item">
+          <span class="mark">&#9633;</span>
+          <div class="txt">
+            <strong>Simplicity</strong>
+            <span>Fewer moving parts means fewer things that break later.</span>
+          </div>
+        </div>
+        <div class="about-list-item">
+          <span class="mark">&#9633;</span>
+          <div class="txt">
+            <strong>Useful output</strong>
+            <span>Whatever gets delivered should save time, not create new work.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROCESS ============ -->
+<section id="process">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="section-label">HOW A PROJECT RUNS</div>
+        <h2 class="section-title">Process</h2>
+      </div>
+      <div class="section-meta">5-STEP WORKFLOW</div>
+    </div>
+
+    <div class="process-track">
+      <div class="process-step">
+        <div class="process-num">01</div>
+        <div class="process-title">DISCUSS</div>
+        <div class="process-desc">Tell me what you need.</div>
+        <div class="process-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></div>
+      </div>
+      <div class="process-step">
+        <div class="process-num">02</div>
+        <div class="process-title">PLAN</div>
+        <div class="process-desc">We define the requirements and approach.</div>
+        <div class="process-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></div>
+      </div>
+      <div class="process-step">
+        <div class="process-num">03</div>
+        <div class="process-title">DESIGN</div>
+        <div class="process-desc">The interface, visuals, or design direction are worked out.</div>
+        <div class="process-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></div>
+      </div>
+      <div class="process-step">
+        <div class="process-num">04</div>
+        <div class="process-title">BUILD</div>
+        <div class="process-desc">The work is built and checked.</div>
+        <div class="process-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></div>
+      </div>
+      <div class="process-step">
+        <div class="process-num">05</div>
+        <div class="process-title">DELIVER</div>
+        <div class="process-desc">The finished solution is delivered.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REQUEST A SERVICE ============ -->
+<section id="request">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="section-label">START A PROJECT</div>
+        <h2 class="section-title">Request a Service</h2>
+      </div>
+      <div class="section-meta">RESPONSE TIME: 1–2 DAYS</div>
+    </div>
+
+    <div class="form-shell">
+      <div class="form-info">
+        <h3>Before you submit</h3>
+        <p>The more detail you give, the faster I can put together an accurate response and timeline.</p>
+        <ul class="form-info-list">
+          <li><b>01</b> Describe the problem, not just the feature you want built.</li>
+          <li><b>02</b> Give a realistic budget range — it helps scope the right solution.</li>
+          <li><b>03</b> Mention any deadline up front.</li>
+        </ul>
+      </div>
+      <div class="form-body">
+        <form id="serviceForm">
+          <div class="form-row">
+            <div class="field">
+              <label for="fname">Name</label>
+              <input type="text" id="fname" name="name" required placeholder="Your full name">
+            </div>
+            <div class="field">
+              <label for="femail">Email</label>
+              <input type="email" id="femail" name="email" required placeholder="your@email.com">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="fservice">Service Required</label>
+              <select id="fservice" name="service" required>
+                <option value="">Select a service</option>
+                <option>Software Development</option>
+                <option>Mobile App</option>
+                <option>Web Application</option>
+                <option>UI/UX Design</option>
+                <option>Automation</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="fptype">Project Type</label>
+              <select id="fptype" name="projectType">
+                <option value="">Select project type</option>
+                <option>New project</option>
+                <option>Redesign / rebuild</option>
+                <option>Ongoing support</option>
+                <option>Consultation only</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="fbudget">Budget Range</label>
+              <select id="fbudget" name="budget">
+                <option value="">Select a range</option>
+                <option>Under K2,000</option>
+                <option>K2,000 – K5,000</option>
+                <option>K5,000 – K15,000</option>
+                <option>K15,000+</option>
+                <option>Not sure yet</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="finfo">Additional Information</label>
+              <input type="text" id="finfo" name="additional" placeholder="Deadlines, references, anything else">
+            </div>
+          </div>
+          <div class="field">
+            <label for="fdesc">Project Description</label>
+            <textarea id="fdesc" name="description" required placeholder="What are you trying to build? What problem does it solve?"></textarea>
+          </div>
+          <div class="field">
+            <label>Preferred Contact Method</label>
+            <div class="radio-row">
+              <label class="radio-opt"><input type="radio" name="contactMethod" value="Email" checked> Email</label>
+              <label class="radio-opt"><input type="radio" name="contactMethod" value="WhatsApp"> WhatsApp</label>
+            </div>
+          </div>
+          <div class="form-submit">
+            <span class="form-note">FIELDS MARKED REQUIRED MUST BE COMPLETED</span>
+            <button type="submit" class="btn btn-solid">SEND REQUEST</button>
+          </div>
+          <div class="success-box" id="successBox">
+            <b>OPENING YOUR REQUEST</b>
+            <span id="successBoxText">Your email app should now be open with the details filled in — just hit send.</span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="section-label">GET IN TOUCH</div>
+        <h2 class="section-title">Contact</h2>
+      </div>
+      <div class="section-meta">DIRECT CONTACT</div>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-main">
+        <h2>Have a project in mind?</h2>
+        <p>Tell me what you're trying to build.</p>
+        <div class="contact-list">
+          <div class="contact-row">
+            <span class="k">Email</span>
+            <a class="v" href="mailto:paraddroid@gmail.com">paraddroid@gmail.com</a>
+          </div>
+          <div class="contact-row">
+            <span class="k">WhatsApp</span>
+            <a class="v" href="https://wa.me/260970898117" target="_blank" rel="noopener">0970 898 117</a>
+          </div>
+          <div class="contact-row">
+            <span class="k">Location</span>
+            <span class="v">Zambia</span>
+          </div>
+        </div>
+      </div>
+      <div class="contact-side">
+        <a href="#request" class="btn btn-solid">REQUEST SERVICE</a>
+        <a href="mailto:paraddroid@gmail.com" class="btn btn-outline">EMAIL DIRECTLY</a>
+        <button type="button" class="btn btn-outline" id="donateBtnFooter">DONATE</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand"><img src="logo.png" alt="Paraddroid logo" class="brand-mark">PARADDROID</div>
+        <p class="footer-desc">Independent software development and UI/UX design. Practical solutions, built properly.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <a href="#home">Home</a>
+        <a href="#services">Services</a>
+        <a href="#work">Work</a>
+        <a href="#about">About</a>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <span>Software Development</span>
+        <span>UI/UX Design</span>
+        <span>Technical Solutions</span>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="mailto:paraddroid@gmail.com">paraddroid@gmail.com</a>
+        <a href="https://wa.me/260970898117" target="_blank" rel="noopener">0970 898 117</a>
+        <a href="#request">Request a service</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 PARADDROID. ALL RIGHTS RESERVED.</span>
+      <span>BUILT AND MAINTAINED INDEPENDENTLY.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ DONATE MODAL ============ -->
+<div class="modal-overlay" id="donateOverlay">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="donateTitle">
+    <div class="modal-head">
+      <span id="donateTitle" class="mono">SUPPORT PARADDROID</span>
+      <button type="button" class="modal-close" id="donateClose" aria-label="Close">&times;</button>
+    </div>
+    <div class="modal-body" id="donateStepChoose">
+      <p>Choose a mobile money provider to donate with.</p>
+      <div class="donate-options">
+        <button type="button" class="donate-opt" data-provider="MTN Mobile Money">
+          <span class="donate-opt-name">MTN Mobile Money</span>
+          <span class="donate-opt-arrow">&rarr;</span>
+        </button>
+        <button type="button" class="donate-opt" data-provider="Airtel Mobile Money">
+          <span class="donate-opt-name">Airtel Mobile Money</span>
+          <span class="donate-opt-arrow">&rarr;</span>
+        </button>
+      </div>
+    </div>
+    <div class="modal-body" id="donateStepUnavailable" style="display:none;">
+      <p id="donateUnavailableText"></p>
+      <a href="https://wa.me/260970898117" target="_blank" rel="noopener" class="btn btn-green" style="width:100%;margin-top:16px;">MESSAGE ON WHATSAPP</a>
+      <button type="button" class="btn btn-outline" id="donateBack" style="width:100%;margin-top:10px;">&larr; BACK</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Mobile nav toggle
+  var toggle = document.getElementById('navToggle');
+  var nav = document.getElementById('primaryNav');
+  toggle.addEventListener('click', function(){
+    nav.classList.toggle('mobile-open');
+    var expanded = nav.classList.contains('mobile-open');
+    toggle.setAttribute('aria-expanded', expanded);
+  });
+  nav.querySelectorAll('a').forEach(function(link){
+    link.addEventListener('click', function(){
+      nav.classList.remove('mobile-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Active nav link on scroll
+  var sections = document.querySelectorAll('main section[id], .hero[id]');
+  var navLinks = document.querySelectorAll('.primary-links a');
+  window.addEventListener('scroll', function(){
+    var current = '';
+    sections.forEach(function(sec){
+      var top = sec.offsetTop - 120;
+      if (window.scrollY >= top) current = sec.getAttribute('id');
+    });
+    navLinks.forEach(function(link){
+      link.classList.remove('active');
+      if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+    });
+  });
+
+  // Form submission — builds a message and opens Email or WhatsApp
+  var form = document.getElementById('serviceForm');
+  var successBox = document.getElementById('successBox');
+  var successBoxText = document.getElementById('successBoxText');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    var data = new FormData(form);
+    var name = data.get('name') || '';
+    var email = data.get('email') || '';
+    var service = data.get('service') || '';
+    var projectType = data.get('projectType') || '';
+    var budget = data.get('budget') || '';
+    var description = data.get('description') || '';
+    var additional = data.get('additional') || '';
+    var contactMethod = data.get('contactMethod') || 'Email';
+
+    var lines = [
+      'Name: ' + name,
+      'Email: ' + email,
+      'Service Required: ' + service,
+      'Project Type: ' + (projectType || 'N/A'),
+      'Budget Range: ' + (budget || 'N/A'),
+      '',
+      'Project Description:',
+      description,
+      '',
+      'Additional Information: ' + (additional || 'N/A')
+    ];
+    var messageBody = lines.join('\n');
+
+    if (contactMethod === 'WhatsApp') {
+      var waText = 'New service request via website:\n\n' + messageBody;
+      window.open('https://wa.me/260970898117?text=' + encodeURIComponent(waText), '_blank');
+      successBoxText.textContent = 'WhatsApp should now be open with the details filled in — just hit send.';
+    } else {
+      var subject = 'Service Request: ' + (service || 'General Inquiry');
+      var mailtoUrl = 'mailto:paraddroid@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(messageBody);
+      window.location.href = mailtoUrl;
+      successBoxText.textContent = 'Your email app should now be open with the details filled in — just hit send.';
+    }
+
+    successBox.classList.add('show');
+    successBox.scrollIntoView({behavior:'smooth', block:'nearest'});
+    form.reset();
+  });
+
+  // Inventory tracker — in progress notice
+  var inventoryLink = document.getElementById('inventoryProjectLink');
+  if (inventoryLink) {
+    inventoryLink.addEventListener('click', function(e){
+      e.preventDefault();
+      alert('This project is still in progress. Check back soon.');
+    });
+  }
+
+  // Donate modal
+  var donateOverlay = document.getElementById('donateOverlay');
+  var donateStepChoose = document.getElementById('donateStepChoose');
+  var donateStepUnavailable = document.getElementById('donateStepUnavailable');
+  var donateUnavailableText = document.getElementById('donateUnavailableText');
+  var donateClose = document.getElementById('donateClose');
+  var donateBack = document.getElementById('donateBack');
+  var donateOpts = document.querySelectorAll('.donate-opt');
+
+  function openDonate(){
+    donateStepChoose.style.display = '';
+    donateStepUnavailable.style.display = 'none';
+    donateOverlay.classList.add('open');
+  }
+  function closeDonate(){
+    donateOverlay.classList.remove('open');
+  }
+
+  var donateBtnNav = document.getElementById('donateBtnNav');
+  var donateBtnFooter = document.getElementById('donateBtnFooter');
+  if (donateBtnNav) donateBtnNav.addEventListener('click', openDonate);
+  if (donateBtnFooter) donateBtnFooter.addEventListener('click', openDonate);
+
+  donateClose.addEventListener('click', closeDonate);
+  donateOverlay.addEventListener('click', function(e){
+    if (e.target === donateOverlay) closeDonate();
+  });
+  donateBack.addEventListener('click', function(){
+    donateStepUnavailable.style.display = 'none';
+    donateStepChoose.style.display = '';
+  });
+
+  donateOpts.forEach(function(opt){
+    opt.addEventListener('click', function(){
+      var provider = opt.getAttribute('data-provider');
+      donateUnavailableText.textContent = provider + ' isn\'t set up yet. Please contact me directly on WhatsApp to donate for now.';
+      donateStepChoose.style.display = 'none';
+      donateStepUnavailable.style.display = '';
+    });
+  });
+</script>
+
+</body>
+</html>
